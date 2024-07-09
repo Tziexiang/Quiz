@@ -1,109 +1,238 @@
-name = input("Hello there! What's your name? ")
-print(f"Hello {name}!, before we start, allow me to intruduce you to my quiz.")
+# I imported data from another file and added a GUI to the code.
+import tkinter as tk
+from tkinter import Button
+from data import LOCALIZATION_STRINGS, QUIZ_TOPICS, quiz_questions
+#The title and the size of the window
+import tkinter as tk
+class App(tk.Tk):
+ def __init__(self):
+     super().__init__()
+     self.title("My Quiz")
+     self.geometry("500x700")
 
-print("This quiz is about some helpful information you will need "
-      "before moving or visiting New Zealand.")
+# Create a master frame to hold pages
+     self.master_frame = tk.Frame(self)
+     self.master_frame.pack(fill="both", expand=True)
 
-type = 
+# Create frames for each page
+     self.start_page_frame = tk.Frame(self.master_frame)
+     self.language_page_frame = tk.Frame(self.master_frame)
+     self.about_this_game_page_frame = tk.Frame(self.master_frame)
+     self.quiz_page_frame = tk.Frame(self.master_frame)
+     
+# Place widgets on the start page
+     self.label_start = tk.Label(self.start_page_frame, text="Welcome to the Quiz!")
+     self.label_start.pack(pady=20)
 
-def play():
-  ready = input('Are you ready to play ' + name + '?')
-  if ready in ["yes", "ok", "okay", "go"]:
-    print("Let's get started!")
-  else:
-    print('Come back when you are ready to play.')
-    play()
-
-play()
-
-#--------------------------------
-def quiz():
-
-  guesses = []
-  correct_guesses = 0
-  questions_num = 1
-
-  for key in questions:
-      print("  ")
-      print(key)
-      for i in options[questions_num-1]:
-          print(i)
-      guess = input ("Enter (A, B, C, or  D): ")
-      guess = guess.upper()
-      guesses.append(guess)
-
-      correct_guesses += check_answer(questions.get(key), guess)
-      questions_num += 1
-
-  display_score(correct_guesses, guesses)
-  
-#--------------------------------
-
-def check_answer(answer, guess):
-
-    if answer == guess:
-      print("CORRECT!")
-      return 1
-    else:
-      print("INCORRECT!")
-      return 0
-      
-#--------------------------------
-def display_score(correct_guesses, guesses):
-    print(" ")
-    print("RESULTS")
-    print(" ")
-  
-    print("Answers: ", end="")
-    for i in questions:
-        print(questions.get(i), end=" ")
-    print()
-  
-    print("Guesses: ", end="")
-    for i in guesses:
-      print(i, end=" ")
-    print()
-
-    score = int((correct_guesses/len(questions)*100))
-    print("Your score is: "+str(score)+"%")
-#--------------------------------
-def play_again():
-
-    response = input("Do you want to play again? (yes or no): ")
-    response = response.upper()
-# Asks the user if they want to play again and if not, then the game will end.
-    if response == "YES":
-      return response == "YES"
-    else:
-      return response == "YES"
+     #Buttons for 'Play Game', 'How to play', and 'Exit Game'
+     self.button_play = tk.Button(
+          self.start_page_frame, 
+          text="Play Game", 
+          width=35, 
+          height=3, 
+          command=self.show_language_page
+      )
+     self.button_play.place(x=95, y=400)
 
 
-#--------------------------------
+     self.button_about_this_game = tk.Button(
+         self.start_page_frame, 
+         text="How to play", 
+         width=35, height=3, 
+         command=self.show_about_this_game_page
+     )
+     self.button_about_this_game.place(x=95, y=500)
 
-#These are the dictionary which consists of the questions and the answers for my quiz.
-questions = {
-  "1. What is the capital of New Zealand?": "A",
-  "2. What is the largest city in New Zealand?": "C",
-  "3. What is the name of the steepest mountain in New Zealand?": "B",
-  "4. What is the name of the highest mountain in New Zealand?": "D",
-  "5. What is the name of the largest lake in New Zealand?": "B",
-  "6. What is the name of the largest river in New Zealand?": "B",
-  "7. What is the name of the largest island in New Zealand?": "A",
-  "8. What is the name of the largest city in New Zealand?": "D",
-}
 
-options = [["A. Wellington", "B. Christchurch", "C. Sydney ", "D. Otago"],
-         ["A. Christchurch", "B. Otago", "C. Auckland", "D. Wellington"],
-         ["A. Belfast", "B. Mount Cook", "C. Northwood", "D. Kiwi"],
-         ["A. Mount Cook", "B. Otago", "C. Belfast", "D. Mount Taranaki"],
-         ["A. Otago river", "B. Lake Taupo", "C. Lake papa", "D. Papa rich"],
-         ["A. Belfast river", "B. Waikato RIver", "C. Steven", "D. Big ofalltime"],
-         ["A. South Island", "B. Big Island", "C. Small Island", "D. Medium Island"],
-         ["A. Christchurch", "B. Duneden","C. Wellington", "D. Auckland"]]
+     self.button_exit = tk.Button(
+         self.start_page_frame, 
+         text="Exit Game", 
+         width=35, height=3, 
+         command=self.exit_game
+     )
+     self.button_exit.place(x=95, y=600)
 
-quiz()
+     
+# Place widgets on the language page
+     self.label_language = tk.Label(self.language_page_frame, text="Please select a language you comfortably understand")
+     self.label_language.pack(pady=20)
 
-while play_again():
-  quiz()
+     self.button_english_quiz = tk.Button(
+          self.language_page_frame, 
+          text="English", 
+          width=20, 
+          height=5, 
+          command=self.show_quiz_page
+      )
+     self.button_english_quiz.place(x=35, y=400)
 
-print("Thank you for playing my quiz!")
+
+     self.button_japanese_quiz= tk.Button(
+         self.language_page_frame, 
+         text="Japanese", 
+         width=20, 
+         height=5, 
+         command=self.show_quiz_page
+     )
+     self.button_japanese_quiz.place(x=230, y=400)
+
+#Place widgets on quiz page
+     self.label_quiz = tk.Label(self.quiz_page_frame, text="QUESTIONS")
+     self.label_quiz.pack(pady=20)
+     
+#Place widgets on the how to play page
+     self.label_about_this_game = tk.Label(
+         self.about_this_game_page_frame, 
+         text="This is a quiz game that will test your knowledge of New Zealand. You will be asked a series of questions" + "\n\n" +
+         "Here's how to play:\n" +
+         "1. Select a quiz topic.\n" +
+         "2. Read the question and the answer options.\n" +
+         ""
+     )
+         
+     self.label_about_this_game.place(x=100, y=100)
+
+     self.button_go_back = tk.Button(
+         self.about_this_game_page_frame,
+         text="Go Back",
+         width=35, height=3,
+         command=self.show_start_page
+     )
+     self.button_go_back.place(x=95, y=500)
+     
+# Initially show the start page
+     self.show_start_page()
+
+ def show_start_page(self):
+    self.start_page_frame.pack(fill="both", expand=True)
+    self.language_page_frame.pack_forget()
+    self.about_this_game_page_frame.pack_forget()
+    
+ def show_language_page(self):
+    self.language_page_frame.pack(fill="both", expand=True)
+    self.start_page_frame.pack_forget()
+    self.about_this_game_page_frame.pack_forget()
+
+ def show_about_this_game_page(self):
+     self.about_this_game_page_frame.pack(fill="both", expand=True)
+     self.start_page_frame.pack_forget()
+     self.language_page_frame.pack_forget()
+
+ def show_quiz_page(self):
+     self.quiz_page_frame.pack(fill="both", expand=True)
+     
+
+ def exit_game(self):
+     self.destroy()
+
+if __name__ == "__main__":
+ app = App()
+ app.mainloop()
+        
+            
+       
+#This is a 'how to play' function, which will explain the rules of the quiz.
+
+#-----------------------------
+class Quiz:
+    def __init__(self, language):
+        self.language = language
+
+    def quiz_type(self):
+        return input(LOCALIZATION_STRINGS[self.language]['quiz_type_prompt']).lower()
+
+    def quiz_culture(self):
+        questions = quiz_questions['quiz_culture']
+        total_score = 0
+
+        for i, question in enumerate(questions, 1):
+            print(f"Question {i}: {question['question']}")
+            for idx, option in enumerate(question['options'], 1):
+                print(f"{idx}. {option}")
+            user_answer = input("Your answer (A, B, C, or D): ").lower()
+            if user_answer == question['correct_answer']:
+                total_score += 1
+                print("Correct!\n")
+            else:
+                print(f"Wrong! The correct answer is {question['options'][ord(question['correct_answer']) - ord('a')]}\n")
+
+        if self.language == 'english':
+            print(f"Your total score is {total_score}/{len(questions)}")
+        elif self.language == 'japanese':
+            print(f"あなたの合計スコアは {total_score}/{len(questions)}")
+
+    def quiz_geography(self):
+        questions = quiz_questions['quiz_geography']
+        total_score = 0
+
+        for i, question in enumerate(questions, 1):
+            print(f"Question {i}: {question['question']}")
+            for idx, option in enumerate(question['options'], 1):
+                print(f"{idx}. {option}")
+            user_answer = input("Your answer (A, B, C, or D): ").lower()
+            if user_answer == question['correct_answer']:
+                total_score += 1
+                print("Correct!\n")
+            else:
+                print(f"Wrong! The correct answer is {question['options'][ord(question['correct_answer']) - ord('a')]}\n")
+
+        if self.language == 'english':
+            print(f"Your total score is {total_score}/{len(questions)}")
+        elif self.language == 'japanese':
+            print(f"あなたの合計スコアは {total_score}/{len(questions)}")
+
+    def quiz_foods(self):
+        questions = quiz_questions['quiz_foods']
+        total_score = 0
+
+        for i, question in enumerate(questions, 1):
+            print(f"Question {i}: {question['question']}")
+            for idx, option in enumerate(question['options'], 1):
+                print(f"{idx}. {option}")
+            user_answer = input("Your answer (A, B, C, or D): ").lower()
+            if user_answer == question['correct_answer']:
+                total_score += 1
+                print("Correct!\n")
+            else:
+                print(f"Wrong! The correct answer is {question['options'][ord(question['correct_answer']) - ord('a')]}\n")
+
+        if self.language == 'english':
+            print(f"Your total score is {total_score}/{len(questions)}")
+        elif self.language == 'japanese':
+            print(f"あなたの合計スコアは {total_score}/{len(questions)}")
+
+
+    def play(self):
+        name = input(LOCALIZATION_STRINGS[self.language]['greeting'])
+        print(LOCALIZATION_STRINGS[self.language]['introduction'].format(name=name))
+        print(LOCALIZATION_STRINGS[self.language]['quiz_info'])
+
+        # Ask if the user wants to play
+        play = input(LOCALIZATION_STRINGS[self.language]['play_prompt']).lower()
+        if play == 'yes' if self.language == 'english' else 'はい':
+            # The user wants to play, so start the quiz
+            while True:  # Keep playing until the user decides to stop
+                quiz_type = self.quiz_type()
+                if quiz_type in QUIZ_TOPICS:
+                    getattr(self, QUIZ_TOPICS[quiz_type])()
+                    play = input(LOCALIZATION_STRINGS[self.language]['play_again_prompt']).lower()
+                    if play == 'no' if self.language == 'japanese' else 'いいえ':
+                        print(LOCALIZATION_STRINGS[self.language]['bye'])
+                        break # Exit the loop 
+                    if play == 'yes' if self.language == 'english' else 'はい':
+                        # User wants to play again, so continue the loop
+                        continue
+                    else:
+                        # User does not want to play again
+                        print(LOCALIZATION_STRINGS[self.language]['bye'])
+                        break  # Exit the loop           
+
+                else:
+                    print("Invalid quiz type. Please choose from available options. Enter 'Culture', 'Geography', or 'Foods'")
+        else:
+            # User does not want to play
+            print(LOCALIZATION_STRINGS[self.language]['ready'])
+
+
+
+
