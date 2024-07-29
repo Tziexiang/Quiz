@@ -81,6 +81,11 @@ class App(tk.Tk):
             for widget in self.frames["quiz"].winfo_children():
                 widget.destroy()
 
+            # Add question progress label
+            question_progress = f"Question {self.current_question_index + 1} of {len(quiz_questions[self.language][self.selected_quiz_topic])}"
+            self.label_question_progress = tk.Label(self.frames["quiz"], text=question_progress)
+            self.label_question_progress.pack(pady=10)
+
             self.label_quiz_question = tk.Label(self.frames["quiz"], text=question['question'])
             self.label_quiz_question.pack(pady=20)
 
@@ -246,3 +251,4 @@ class App(tk.Tk):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
+    
