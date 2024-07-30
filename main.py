@@ -123,8 +123,47 @@ class App(tk.Tk):
         if self.selected_answer == correct_answer:
             self.total_score += 1
             score_feedback = "Correct!"
+
+        # Add specific feedback for the correct answer
+            if self.selected_quiz_topic == 'quiz_culture':
+                # Provide culture-specific feedback
+                if question['question'] == 'Which country is known as the Land of the Rising Sun?':
+                    score_feedback += "\nThat's right! Japan is often called the 'Land of the Rising Sun' due to its eastern location and the sun rising over the Pacific Ocean."
+                elif question['question'] == 'What is the most widely spoken language in the world?':
+                    score_feedback += "\nExcellent! Mandarin Chinese is spoken by over 1 billion people worldwide."
+            elif self.selected_quiz_topic == 'quiz_geography':
+                # Provide geography-specific feedback
+                if question['question'] == 'What is the capital of France?':
+                    score_feedback += "\nYou got it! Paris is a beautiful city known for its iconic landmarks like the Eiffel Tower and Louvre Museum."
+                elif question['question'] == 'Which continent is the Sahara Desert located on?':
+                    score_feedback += "\nAbsolutely! The Sahara Desert is the largest hot desert in the world and covers most of North Africa."
+            elif self.selected_quiz_topic == 'quiz_foods':
+                # Provide food-specific feedback
+                if question['question'] == 'Which fruit is known as the "king of fruits"?':
+                    score_feedback += "\nYou're on a roll! Mangoes are rich in vitamins, minerals, and antioxidants."
+                elif question['question'] == 'What is the main ingredient in guacamole?':
+                    score_feedback += "\nGreat job! Avocado is a creamy and nutritious fruit that is often used in Mexican cuisine."
         else:
             score_feedback = f"Incorrect. Correct answer: {correct_answer}"
+            # Add specific feedback for the incorrect answer
+            if self.selected_quiz_topic == 'quiz_culture':
+                # Provide culture-specific feedback
+                if question['question'] == 'Which country is known as the Land of the Rising Sun?':
+                    score_feedback += "\nThe 'Land of the Rising Sun' refers to Japan, not China or any other country."
+                elif question['question'] == 'What is the most widely spoken language in the world?':
+                    score_feedback += "\nWhile English is widely spoken, Mandarin Chinese has a higher number of native speakers."
+            elif self.selected_quiz_topic == 'quiz_geography':
+                # Provide geography-specific feedback
+                if question['question'] == 'What is the capital of France?':
+                    score_feedback += "\nParis is the capital of France, not London, Berlin, or Madrid."
+                elif question['question'] == 'Which continent is the Sahara Desert located on?':
+                    score_feedback += "\nThe Sahara Desert is located in Africa, not Asia, Australia, or Europe."
+            elif self.selected_quiz_topic == 'quiz_foods':
+                # Provide food-specific feedback
+                if question['question'] == 'Which fruit is known as the "king of fruits"?':
+                    score_feedback += "\nThe title 'king of fruits' is often given to mangoes, not other fruits like apples, bananas, or grapes."
+                elif question['question'] == 'What is the main ingredient in guacamole?':
+                    score_feedback += "\nGuacamole is primarily made from avocado, not tomato, onion, or pepper."
 
         # Display score feedback
         self.label_score_feedback = tk.Label(self.frames["quiz"], text=score_feedback)
@@ -132,6 +171,7 @@ class App(tk.Tk):
 
         # Update score display
         self.label_score.config(text=f"Score: {self.total_score}/{self.current_question_index + 1}")
+
 
         # Move to the next question after a delay
         self.current_question_index += 1
@@ -251,4 +291,3 @@ class App(tk.Tk):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
-    

@@ -2,7 +2,9 @@ import tkinter as tk
 from tkinter import font
 from data import LOCALIZATION_STRINGS, QUIZ_TOPICS, quiz_questions
 
+
 class App(tk.Tk):
+
     def __init__(self):
         super().__init__()
         self.title("My Quiz")
@@ -18,7 +20,8 @@ class App(tk.Tk):
 
         # Create frames for each page
         self.frames = {}
-        for page in ("start", "language", "about", "quiz_selection", "quiz", "final_score"):
+        for page in ("start", "language", "about", "quiz_selection", "quiz",
+                     "final_score"):
             frame = tk.Frame(self.master_frame)
             self.frames[page] = frame
 
@@ -74,8 +77,10 @@ class App(tk.Tk):
         self.show_quiz_page()
 
     def show_next_question(self):
-        if self.current_question_index < len(quiz_questions[self.language][self.selected_quiz_topic]):
-            question = quiz_questions[self.language][self.selected_quiz_topic][self.current_question_index]
+        if self.current_question_index < len(
+                quiz_questions[self.language][self.selected_quiz_topic]):
+            question = quiz_questions[self.language][self.selected_quiz_topic][
+                self.current_question_index]
 
             # Clear the quiz page frame
             for widget in self.frames["quiz"].winfo_children():
@@ -83,19 +88,27 @@ class App(tk.Tk):
 
             # Add question progress label
             question_progress = f"Question {self.current_question_index + 1} of {len(quiz_questions[self.language][self.selected_quiz_topic])}"
-            self.label_question_progress = tk.Label(self.frames["quiz"], text=question_progress)
+            self.label_question_progress = tk.Label(self.frames["quiz"],
+                                                    text=question_progress)
             self.label_question_progress.pack(pady=10)
 
-            self.label_quiz_question = tk.Label(self.frames["quiz"], text=question['question'])
+            self.label_quiz_question = tk.Label(self.frames["quiz"],
+                                                text=question['question'])
             self.label_quiz_question.pack(pady=20)
 
             self.buttons = []
             for idx, option in enumerate(question['options']):
-                btn = tk.Button(self.frames["quiz"], text=option, command=lambda opt=option: self.select_answer(opt))
+                btn = tk.Button(
+                    self.frames["quiz"],
+                    text=option,
+                    command=lambda opt=option: self.select_answer(opt))
                 btn.pack(anchor="w", pady=5)
                 self.buttons.append(btn)
 
-            self.label_score = tk.Label(self.frames["quiz"], text=f"Score: {self.total_score}/{self.current_question_index}")
+            self.label_score = tk.Label(
+                self.frames["quiz"],
+                text=f"Score: {self.total_score}/{self.current_question_index}"
+            )
             self.label_score.pack(pady=10)
         else:
             self.show_final_score()
@@ -105,7 +118,8 @@ class App(tk.Tk):
         self.check_answer()
 
     def check_answer(self):
-        question = quiz_questions[self.language][self.selected_quiz_topic][self.current_question_index]
+        question = quiz_questions[self.language][self.selected_quiz_topic][
+            self.current_question_index]
         correct_answer = question['correct_answer']
 
         # Disable all buttons to prevent further interaction
@@ -127,15 +141,19 @@ class App(tk.Tk):
             score_feedback = f"Incorrect. Correct answer: {correct_answer}"
 
         # Display score feedback
-        self.label_score_feedback = tk.Label(self.frames["quiz"], text=score_feedback)
+        self.label_score_feedback = tk.Label(self.frames["quiz"],
+                                             text=score_feedback)
         self.label_score_feedback.pack(pady=10)
 
         # Update score display
-        self.label_score.config(text=f"Score: {self.total_score}/{self.current_question_index + 1}")
+        self.label_score.config(
+            text=f"Score: {self.total_score}/{self.current_question_index + 1}"
+        )
 
         # Move to the next question after a delay
         self.current_question_index += 1
-        if self.current_question_index < len(quiz_questions[self.language][self.selected_quiz_topic]):
+        if self.current_question_index < len(
+                quiz_questions[self.language][self.selected_quiz_topic]):
             self.after(1000, self.show_next_question)  # 1-second delay
         else:
             self.after(1000, self.show_final_score)  # 1-second delay
@@ -152,13 +170,18 @@ class App(tk.Tk):
         self.show_page("final_score")
 
         score_text = f"Your total score is {self.total_score}/{len(quiz_questions[self.language][self.selected_quiz_topic])}"
-        self.label_final_score = tk.Label(self.frames["final_score"], text=score_text)
+        self.label_final_score = tk.Label(self.frames["final_score"],
+                                          text=score_text)
         self.label_final_score.pack(pady=20)
 
-        self.button_go_back_to_start = tk.Button(self.frames["final_score"], text="Go Back to Start", command=self.reset_quiz)
+        self.button_go_back_to_start = tk.Button(self.frames["final_score"],
+                                                 text="Go Back to Start",
+                                                 command=self.reset_quiz)
         self.button_go_back_to_start.pack(pady=20)
 
-        self.button_exit = tk.Button(self.frames["final_score"], text="Exit Game", command=self.exit_game)
+        self.button_exit = tk.Button(self.frames["final_score"],
+                                     text="Exit Game",
+                                     command=self.exit_game)
         self.button_exit.pack(pady=20)
 
     def reset_quiz(self):
@@ -170,85 +193,77 @@ class App(tk.Tk):
         self.destroy()
 
     def setup_start_page(self):
-        self.label_start = tk.Label(self.frames["start"], text="Welcome to the Quiz!")
+        self.label_start = tk.Label(self.frames["start"],
+                                    text="Welcome to the Quiz!")
         self.label_start.pack(pady=20)
 
-        self.button_play = tk.Button(
-            self.frames["start"],
-            text="Play Game",
-            command=self.show_language_page
-        )
+        self.button_play = tk.Button(self.frames["start"],
+                                     text="Play Game",
+                                     command=self.show_language_page)
         self.button_play.pack(pady=20)
 
         self.button_about_this_game = tk.Button(
             self.frames["start"],
             text="How to play",
-            command=self.show_about_this_game_page
-        )
+            command=self.show_about_this_game_page)
         self.button_about_this_game.pack(pady=20)
 
-        self.button_exit = tk.Button(
-            self.frames["start"],
-            text="Exit Game",
-            command=self.exit_game
-        )
+        self.button_exit = tk.Button(self.frames["start"],
+                                     text="Exit Game",
+                                     command=self.exit_game)
         self.button_exit.pack(pady=20)
 
     def setup_language_page(self):
-        self.label_language = tk.Label(self.frames["language"], text="Please select a language you comfortably understand")
+        self.label_language = tk.Label(
+            self.frames["language"],
+            text="Please select a language you comfortably understand")
         self.label_language.pack(pady=20)
 
         self.button_english_quiz = tk.Button(
             self.frames["language"],
             text="English",
-            command=lambda: self.show_quiz_selection_page('english')
-        )
+            command=lambda: self.show_quiz_selection_page('english'))
         self.button_english_quiz.pack(pady=20)
 
         self.button_japanese_quiz = tk.Button(
             self.frames["language"],
             text="Japanese",
-            command=lambda: self.show_quiz_selection_page('japanese')
-        )
+            command=lambda: self.show_quiz_selection_page('japanese'))
         self.button_japanese_quiz.pack(pady=20)
 
     def setup_about_this_game_page(self):
         self.label_about_this_game = tk.Label(
             self.frames["about"],
-            text=LOCALIZATION_STRINGS[self.language]['quiz_info']
-        )
+            text=LOCALIZATION_STRINGS[self.language]['quiz_info'])
         self.label_about_this_game.pack(pady=20)
 
-        self.button_go_back_to_start = tk.Button(
-            self.frames["about"],
-            text="Go Back",
-            command=self.show_start_page
-        )
+        self.button_go_back_to_start = tk.Button(self.frames["about"],
+                                                 text="Go Back",
+                                                 command=self.show_start_page)
         self.button_go_back_to_start.pack(pady=20)
 
     def update_about_page_text(self):
-        self.label_about_this_game.config(text=LOCALIZATION_STRINGS[self.language]['quiz_info'])
+        self.label_about_this_game.config(
+            text=LOCALIZATION_STRINGS[self.language]['quiz_info'])
 
     def setup_quiz_selection_page(self):
-        self.label_select_quiz = tk.Label(self.frames["quiz_selection"], text="Please select a quiz topic")
+        self.label_select_quiz = tk.Label(self.frames["quiz_selection"],
+                                          text="Please select a quiz topic")
         self.label_select_quiz.pack(pady=20)
 
         for topic_key, topic_value in QUIZ_TOPICS.items():
             button = tk.Button(
                 self.frames["quiz_selection"],
                 text=topic_value,
-                command=lambda topic=topic_key: self.start_quiz(topic)
-            )
+                command=lambda topic=topic_key: self.start_quiz(topic))
             button.pack(pady=10)
 
-        self.button_go_back = tk.Button(
-            self.frames["quiz_selection"],
-            text="Go Back",
-            command=self.show_language_page
-        )
+        self.button_go_back = tk.Button(self.frames["quiz_selection"],
+                                        text="Go Back",
+                                        command=self.show_language_page)
         self.button_go_back.pack(pady=20)
+
 
 if __name__ == "__main__":
     app = App()
     app.mainloop()
-    
