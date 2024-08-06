@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import font
-from data import LOCALIZATION_STRINGS, QUIZ_TOPICS, quiz_questions
+from data import LOCALIZATION_STRINGS, QUIZ_TOPICS, quiz_questions, quiz_feedback
+
 
 class App(tk.Tk):
     def __init__(self):
@@ -11,7 +12,7 @@ class App(tk.Tk):
         self.current_question_index = 0
         self.total_score = 0
         self.selected_quiz_topic = "quiz_culture"  # Default quiz topic
-
+        
         # Create a master frame to hold pages
         self.master_frame = tk.Frame(self)
         self.master_frame.pack(fill="both", expand=True)
@@ -107,67 +108,223 @@ class App(tk.Tk):
     def check_answer(self):
         question = quiz_questions[self.language][self.selected_quiz_topic][self.current_question_index]
         correct_answer = question['correct_answer']
-
         # Disable all buttons to prevent further interaction
         for btn in self.buttons:
             btn.configure(state=tk.DISABLED)
-
         # Highlight correct and incorrect answers
         for idx, option in enumerate(question['options']):
             if option == correct_answer:
                 self.buttons[idx].configure(bg="green")
             elif option == self.selected_answer:
                 self.buttons[idx].configure(bg="red")
-
+                
         # Check selected answer against correct answer
         if self.selected_answer == correct_answer:
             self.total_score += 1
             score_feedback = "Correct!"
-
-        # Add specific feedback for the correct answer
+            if self.language == 'japanese':
+                score_feedback = "正解！"
             if self.selected_quiz_topic == 'quiz_culture':
-                # Provide culture-specific feedback
-                if question['question'] == 'Which country is known as the Land of the Rising Sun?':
-                    score_feedback += "\nThat's right! Japan is often called the 'Land of the Rising Sun' due to its eastern location and the sun rising over the Pacific Ocean."
-                elif question['question'] == 'What is the most widely spoken language in the world?':
-                    score_feedback += "\nExcellent! Mandarin Chinese is spoken by over 1 billion people worldwide."
+                if question['question'] == 'What is the national bird of New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['correct_bird']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['correct_bird']}"
+               
+                elif question['question'] == 'What is the traditional Māori greeting?':
+                    if self.language == 'english':
+                            score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['correct_greeting']}"
+                    else:
+                            score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['correct_greeting']}"
+                
+                elif question['question'] == 'What is the name of the traditional Māori dance?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['correct_traditional_dance']}"
+                    else:
+                            score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['correct_traditional_dance']}"
+                
+                elif question['question'] == 'What is the name of the traditional Māori meeting house?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['correct_house']}"
+                    else:
+                            score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['correct_house']}"
+
+                elif question['question'] == 'What is the name of the traditional Māori carving style?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['correct_carving']}"
+                    else:
+                            score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['correct_carving']}"
+
+                
+            #Feedback for the correct answers for Geography quiz
             elif self.selected_quiz_topic == 'quiz_geography':
-                # Provide geography-specific feedback
-                if question['question'] == 'What is the capital of France?':
-                    score_feedback += "\nYou got it! Paris is a beautiful city known for its iconic landmarks like the Eiffel Tower and Louvre Museum."
-                elif question['question'] == 'Which continent is the Sahara Desert located on?':
-                    score_feedback += "\nAbsolutely! The Sahara Desert is the largest hot desert in the world and covers most of North Africa."
+                if question['question'] == 'What is the capital of New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['correct_nz_capital']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['correct_nz_capital']}"
+                        
+                elif question['question'] == 'Which two islands make up New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['correct_nz_island']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['correct_nz_island']}"
+
+                elif question['question'] == 'What is the name of the highest mountain in New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['correct_mountain']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['correct_mountain']}"
+
+                elif question['question'] == 'What is the name of the largest lake in New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['correct_lake']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['correct_lake']}"
+
+                elif question['question'] == 'What is the name of the famous geothermal area in New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['correct_area']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['correct_area']}"
+
+            #Feedback for the correct answers for Food quiz
             elif self.selected_quiz_topic == 'quiz_foods':
-                # Provide food-specific feedback
-                if question['question'] == 'Which fruit is known as the "king of fruits"?':
-                    score_feedback += "\nYou're on a roll! Mangoes are rich in vitamins, minerals, and antioxidants."
-                elif question['question'] == 'What is the main ingredient in guacamole?':
-                    score_feedback += "\nGreat job! Avocado is a creamy and nutritious fruit that is often used in Mexican cuisine."
+                if question['question'] == 'What is the national dish of New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['correct_cooking_method']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['correct_cooking_method']}"
+                elif question['question'] == 'What is the name of the popular New Zealand fruit?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['correct_fruit']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['correct_fruit']}"
+
+                elif question['question'] == 'What is the name of the popular New Zealand drink?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['correct_drink']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['correct_drink']}"
+
+                elif question['question'] == 'What is the name of the popular New Zealand cheese?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['correct_cheese']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['correct_cheese']}"
+
+                elif question['question'] == 'What is the name of the popular New Zealand chocolate?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['correct_chocolate']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['correct_chocolate']}"
+                        
+        #Feecback for the incorrect answers for the Culture quiz.
         else:
             score_feedback = f"Incorrect. Correct answer: {correct_answer}"
-            # Add specific feedback for the incorrect answer
-            if self.selected_quiz_topic == 'quiz_culture':
-                # Provide culture-specific feedback
-                if question['question'] == 'Which country is known as the Land of the Rising Sun?':
-                    score_feedback += "\nThe 'Land of the Rising Sun' refers to Japan, not China or any other country."
-                elif question['question'] == 'What is the most widely spoken language in the world?':
-                    score_feedback += "\nWhile English is widely spoken, Mandarin Chinese has a higher number of native speakers."
-            elif self.selected_quiz_topic == 'quiz_geography':
-                # Provide geography-specific feedback
-                if question['question'] == 'What is the capital of France?':
-                    score_feedback += "\nParis is the capital of France, not London, Berlin, or Madrid."
-                elif question['question'] == 'Which continent is the Sahara Desert located on?':
-                    score_feedback += "\nThe Sahara Desert is located in Africa, not Asia, Australia, or Europe."
-            elif self.selected_quiz_topic == 'quiz_foods':
-                # Provide food-specific feedback
-                if question['question'] == 'Which fruit is known as the "king of fruits"?':
-                    score_feedback += "\nThe title 'king of fruits' is often given to mangoes, not other fruits like apples, bananas, or grapes."
-                elif question['question'] == 'What is the main ingredient in guacamole?':
-                    score_feedback += "\nGuacamole is primarily made from avocado, not tomato, onion, or pepper."
+            if self.language == 'japanese':
+                score_feedback = "不正解。正解は" + correct_answer + "です。"
 
+            if self.selected_quiz_topic == 'quiz_culture':
+                if question['question'] == 'What is the national bird of New Zealand?':
+                    if self.language == 'english':
+                            score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['incorrect_bird']}"
+                    else:
+                            score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['incorrect_bird']}"
+                        
+                elif question['question'] == 'What is the traditional Māori greeting?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['incorrect_greeting']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['incorrect_greeting']}"
+                        
+                elif question['question'] == 'What is the name of the traditional Māori dance?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['incorrect_traditional_dance']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['incorrect_traditional_dance']}"
+
+                elif question['question'] == 'What is the name of the traditional Māori meeting house?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['incorrect_house']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['incorrect_house']}"
+
+                elif question['question'] == 'What is the name of the traditional Māori carving style?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['incorrect_carving']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_culture']['incorrect_carving']}"
+                
+                
+            #Feedback for the incorrect answers for Geography quiz
+            elif self.selected_quiz_topic == 'quiz_geography':
+                if question['question'] == 'What is the capital of New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['incorrect_nz_capital']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['incorrect_nz_capital']}"
+                elif question['question'] == 'Which two islands make up New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['incorrect_nz_island']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['incorrect_nz_island']}"
+
+                elif question['question'] == 'What is the name of the highest mountain in New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['incorrect_mountain']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['incorrect_mountain']}"
+
+                elif question['question'] == 'What is the name of the largest lake in New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['incorrect_lake']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['incorrect_lake']}"
+
+                elif question['question'] == 'What is the name of the famous geothermal area in New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['incorrect_area']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_geography']['incorrect_area']}"
+                
+            #Feedback for the incorrect answers for Food quiz
+            elif self.selected_quiz_topic == 'quiz_foods':
+                if question['question'] == 'What is the national dish of New Zealand?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['incorrect_cooking_method']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['incorrect_cooking_method']}"
+                        
+                elif question['question'] == 'What is the name of the popular New Zealand fruit?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['incorrect_fruit']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['incorrect_fruit']}"
+
+                elif question['question'] == 'What is the name of the popular New Zealand drink?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['incorrect_drink']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['incorrect_drink']}"
+
+                elif question['question'] == 'What is the name of the popular New Zealand cheese?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['incorrect_cheese']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['incorrect_cheese']}"
+
+                elif question['question'] == 'What is the name of the popular New Zealand chocolate?':
+                    if self.language == 'english':
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['incorrect_chocolate']}"
+                    else:
+                        score_feedback += f"\n{quiz_feedback[self.language]['quiz_foods']['incorrect_chocolate']}"
+                
+   
         # Display score feedback
         self.label_score_feedback = tk.Label(self.frames["quiz"], text=score_feedback)
         self.label_score_feedback.pack(pady=10)
+
 
         # Update score display
         self.label_score.config(text=f"Score: {self.total_score}/{self.current_question_index + 1}")
@@ -176,9 +333,9 @@ class App(tk.Tk):
         # Move to the next question after a delay
         self.current_question_index += 1
         if self.current_question_index < len(quiz_questions[self.language][self.selected_quiz_topic]):
-            self.after(1000, self.show_next_question)  # 1-second delay
+            self.after(4000, self.show_next_question)  # 3-second delay
         else:
-            self.after(1000, self.show_final_score)  # 1-second delay
+            self.after(4000, self.show_final_score)  # 3-second delay
 
     def show_final_score(self):
         # Clear the quiz page frame
@@ -255,10 +412,13 @@ class App(tk.Tk):
     def setup_about_this_game_page(self):
         self.label_about_this_game = tk.Label(
             self.frames["about"],
-            text=LOCALIZATION_STRINGS[self.language]['quiz_info']
+            text=LOCALIZATION_STRINGS[self.language]['quiz_info'],
+            wraplength=350,
+            justify="left"
         )
         self.label_about_this_game.pack(pady=20)
 
+        
         self.button_go_back_to_start = tk.Button(
             self.frames["about"],
             text="Go Back",
